@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.ServiceProcess;
 using System.Timers;
@@ -11,6 +12,7 @@ namespace MiningFixer
         private readonly ILogFileFinder logFileFinder;
         private readonly ILogStreamProvider logStreamProvider;
         private readonly Func<FileStream, ILogParser> logParserProvider;
+        private readonly EventLog eventLog;
 
         private string prevLastLogFile = null;
         private ILogParser currentParser;
@@ -18,13 +20,15 @@ namespace MiningFixer
         public MiningFixerService(
             ILogFileFinder logFileFinder,
             ILogStreamProvider logStreamProvider,
-            Func<FileStream, ILogParser> logParserProvider)
+            Func<FileStream, ILogParser> logParserProvider,
+            EventLog eventLog)
         {
             InitializeComponent();
             timer = new Timer();
             this.logFileFinder = logFileFinder;
             this.logStreamProvider = logStreamProvider;
             this.logParserProvider = logParserProvider;
+            this.eventLog = eventLog;
         }
 
         protected override void OnStart(string[] args)
@@ -32,6 +36,9 @@ namespace MiningFixer
             timer.Elapsed += new ElapsedEventHandler(OnTimerTick);
             timer.Interval = 10000;
             timer.Enabled = true;
+
+            AutoLog = false;
+            eventLog.WriteEntry("Mining Fixer Service started");
         }
 
         private void OnTimerTick(object sender, ElapsedEventArgs args)
@@ -54,6 +61,7 @@ namespace MiningFixer
 
         protected override void OnStop()
         {
+            eventLog.WriteEntry("Mining Fixer Service stopped");
         }
     }
 }

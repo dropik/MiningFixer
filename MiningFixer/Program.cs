@@ -1,25 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Autofac;
+using Divergic.Configuration.Autofac;
+using System;
+using System.IO;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiningFixer
 {
     static class Program
     {
-        /// <summary>
-        /// Главная точка входа для приложения.
-        /// </summary>
         static void Main()
         {
-            ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[]
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
+            var containerBuilder = new ContainerBuilder();
+
+            containerBuilder.RegisterModule<ConfigurationModule<JsonResolver<AppSettings>>>();
+
+            containerBuilder.RegisterType<MainService>().AsSelf().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<LogFileFinder>().As<ILogFileFinder>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<LogStreamProvider>().As<ILogStreamProvider>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<VoltageFixRunner>().As<IVoltageFixRunner>().InstancePerLifetimeScope();
+            containerBuilder.Register<Func<FileStream, ILogParser>>(context =>
             {
-                new MainService()
-            };
-            ServiceBase.Run(ServicesToRun);
+                var newContext = context.Resolve<IComponentContext>();
+                return stream =>
+                {
+                    return new LogParser(stream, newContext.Resolve<AppSettings>(), newContext.Resolve<IVoltageFixRunner>());
+                };
+            });
+
+            var container = containerBuilder.Build();
+
+            ServiceBase.Run(container.Resolve<MainService>());
         }
     }
 }

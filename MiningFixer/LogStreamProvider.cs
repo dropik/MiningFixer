@@ -4,9 +4,9 @@ namespace MiningFixer
 {
     public class LogStreamProvider : ILogStreamProvider
     {
-        public StreamReader GetLogStream(string logFilePath)
+        public FileStream GetLogStream(string logFilePath)
         {
-            return new StreamReader(new FileStream(logFilePath, FileMode.Open, FileAccess.Read));
+            return new FileStream(logFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
     }
 }

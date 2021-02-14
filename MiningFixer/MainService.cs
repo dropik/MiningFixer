@@ -10,7 +10,7 @@ namespace MiningFixer
         private readonly Timer timer;
         private readonly ILogFileFinder logFileFinder;
         private readonly ILogStreamProvider logStreamProvider;
-        private readonly Func<StreamReader, ILogParser> logParserProvider;
+        private readonly Func<FileStream, ILogParser> logParserProvider;
 
         private string prevLastLogFile = null;
         private ILogParser currentParser;
@@ -18,7 +18,7 @@ namespace MiningFixer
         public MainService(
             ILogFileFinder logFileFinder,
             ILogStreamProvider logStreamProvider,
-            Func<StreamReader, ILogParser> logParserProvider)
+            Func<FileStream, ILogParser> logParserProvider)
         {
             InitializeComponent();
             timer = new Timer();
@@ -39,11 +39,17 @@ namespace MiningFixer
             var lastLogFile = logFileFinder.LastLogFile;
             if (lastLogFile != prevLastLogFile)
             {
+                if (currentParser != null)
+                {
+                    currentParser.Dispose();
+                }
+
                 prevLastLogFile = lastLogFile;
-                var reader = logStreamProvider.GetLogStream(lastLogFile);
-                currentParser = logParserProvider.Invoke(reader);
+                var stream = logStreamProvider.GetLogStream(lastLogFile);
+                stream.Seek(0, SeekOrigin.End);
+                currentParser = logParserProvider.Invoke(stream);
             }
-            currentParser.Parse();
+            currentParser?.Parse();
         }
 
         protected override void OnStop()

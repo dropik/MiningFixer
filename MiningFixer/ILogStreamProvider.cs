@@ -4,6 +4,6 @@ namespace MiningFixer
 {
     public interface ILogStreamProvider
     {
-        StreamReader GetLogStream(string logFilePath);
+        FileStream GetLogStream(string logFilePath);
     }
 }

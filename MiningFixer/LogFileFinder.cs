@@ -16,7 +16,7 @@ namespace MiningFixer
         {
             get
             {
-                var directory = new DirectoryInfo(settings.LogDirectory);
+                var directory = new DirectoryInfo(Path.GetFullPath(settings.LogDirectory));
                 var mostRecentFileQuery = from file in directory.GetFiles()
                                           orderby file.LastWriteTime descending
                                           select file.FullName;

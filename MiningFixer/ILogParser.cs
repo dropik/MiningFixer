@@ -1,6 +1,8 @@
-﻿namespace MiningFixer
+﻿using System;
+
+namespace MiningFixer
 {
-    public interface ILogParser
+    public interface ILogParser : IDisposable
     {
         void Parse();
     }

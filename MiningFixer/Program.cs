@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Divergic.Configuration.Autofac;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.ServiceProcess;
 
@@ -27,9 +28,20 @@ namespace MiningFixer
                     return new LogParser(stream, newContext.Resolve<AppSettings>(), newContext.Resolve<IVoltageFixRunner>());
                 };
             });
+            containerBuilder.Register(context =>
+            {
+                var eventLog = new EventLog();
+                if (!EventLog.SourceExists("MiningFixer"))
+                {
+                    EventLog.CreateEventSource("MiningFixer", "Application");
+                }
+                eventLog.Source = "MiningFixer";
+                eventLog.Log = "Application";
+                return eventLog;
+            });
             containerBuilder.Register<IVoltageFixRunner>(context =>
             {
-                return new LogVoltageFixRunner(new VoltageFixRunner(context.Resolve<AppSettings>()), context.Resolve<MiningFixerService>().EventLog);
+                return new LogVoltageFixRunner(new VoltageFixRunner(context.Resolve<AppSettings>()), context.Resolve<EventLog>());
             });
 
             var container = containerBuilder.Build();

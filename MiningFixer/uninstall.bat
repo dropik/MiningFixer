@@ -1,2 +1,3 @@
 sc stop MiningFixerService
 sc delete MiningFixerService
+pause

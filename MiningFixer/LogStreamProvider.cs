@@ -2,7 +2,7 @@
 
 namespace MiningFixer
 {
-    public class LogStreamProvider
+    public class LogStreamProvider : ILogStreamProvider
     {
         public StreamReader GetLogStream(string logFilePath)
         {

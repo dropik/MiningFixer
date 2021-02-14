@@ -4,7 +4,7 @@ using System.IO;
 
 namespace MiningFixer
 {
-    public class LogParser
+    public class LogParser : ILogParser
     {
         private readonly StreamReader logReader;
         private readonly AppSettings settings;
@@ -22,25 +22,29 @@ namespace MiningFixer
         public void Parse()
         {
             var line = logReader.ReadLine();
-            if (line.Contains("GPUs power:"))
+            while (line != null)
             {
-                var split = line.Split(' ');
-                try
+                if (line.Contains("GPUs power:"))
                 {
-                    var amount = float.Parse(split[2], NumberStyles.Float);
-                    if (amount >= settings.MaxAllowedPower)
+                    var split = line.Split(' ');
+                    try
                     {
-                        suspiciousCount++;
-                    }
+                        var amount = float.Parse(split[2], NumberStyles.Float);
+                        if (amount >= settings.MaxAllowedPower)
+                        {
+                            suspiciousCount++;
+                        }
 
-                    if (suspiciousCount >= settings.Threshold)
-                    {
-                        suspiciousCount = 0;
-                        voltageFixRunner.Run();
+                        if (suspiciousCount >= settings.Threshold)
+                        {
+                            suspiciousCount = 0;
+                            voltageFixRunner.Run();
+                        }
                     }
+                    catch (Exception) { }
                 }
-                catch (Exception) { }
-            }    
+                line = logReader.ReadLine();
+            }
         }
     }
 }

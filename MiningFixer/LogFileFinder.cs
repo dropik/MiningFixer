@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MiningFixer
 {
-    public class LogFileFinder
+    public class LogFileFinder : ILogFileFinder
     {
         private readonly AppSettings settings;
 

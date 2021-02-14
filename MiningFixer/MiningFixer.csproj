@@ -70,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="ILogFileFinder.cs" />
+    <Compile Include="ILogParser.cs" />
+    <Compile Include="ILogStreamProvider.cs" />
     <Compile Include="IVoltageFixRunner.cs" />
     <Compile Include="LogFileFinder.cs" />
     <Compile Include="LogParser.cs" />

@@ -1,7 +1,7 @@
 ﻿
 namespace MiningFixer
 {
-    partial class Service1
+    partial class MainService
     {
         /// <summary> 
         /// Обязательная переменная конструктора.

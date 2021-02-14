@@ -19,7 +19,6 @@ namespace MiningFixer
             containerBuilder.RegisterType<MiningFixerService>().AsSelf().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LogFileFinder>().As<ILogFileFinder>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LogStreamProvider>().As<ILogStreamProvider>().InstancePerLifetimeScope();
-            containerBuilder.RegisterType<VoltageFixRunner>().As<IVoltageFixRunner>().InstancePerLifetimeScope();
             containerBuilder.Register<Func<FileStream, ILogParser>>(context =>
             {
                 var newContext = context.Resolve<IComponentContext>();
@@ -27,6 +26,10 @@ namespace MiningFixer
                 {
                     return new LogParser(stream, newContext.Resolve<AppSettings>(), newContext.Resolve<IVoltageFixRunner>());
                 };
+            });
+            containerBuilder.Register<IVoltageFixRunner>(context =>
+            {
+                return new LogVoltageFixRunner(new VoltageFixRunner(context.Resolve<AppSettings>()), context.Resolve<MiningFixerService>().EventLog);
             });
 
             var container = containerBuilder.Build();

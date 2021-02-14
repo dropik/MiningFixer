@@ -162,6 +162,7 @@
     <Compile Include="LogFileFinder.cs" />
     <Compile Include="LogParser.cs" />
     <Compile Include="LogStreamProvider.cs" />
+    <Compile Include="LogVoltageFixRunner.cs" />
     <Compile Include="MiningFixerService.cs">
       <SubType>Component</SubType>
     </Compile>

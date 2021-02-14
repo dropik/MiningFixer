@@ -32,6 +32,9 @@ namespace MiningFixer
             timer.Elapsed += new ElapsedEventHandler(OnTimerTick);
             timer.Interval = 10000;
             timer.Enabled = true;
+
+            EventLog.Source = "Services";
+            EventLog.Log = "MiningFixerService";
         }
 
         private void OnTimerTick(object sender, ElapsedEventArgs args)

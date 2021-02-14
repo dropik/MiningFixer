@@ -1,7 +1,7 @@
 ﻿
 namespace MiningFixer
 {
-    partial class MainService
+    partial class MiningFixerService
     {
         /// <summary> 
         /// Обязательная переменная конструктора.
@@ -29,8 +29,11 @@ namespace MiningFixer
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.ServiceName = "Service1";
+            // 
+            // MainService
+            // 
+            this.ServiceName = "MiningFixerService";
+
         }
 
         #endregion

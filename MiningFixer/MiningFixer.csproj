@@ -159,11 +159,11 @@
     <Compile Include="LogFileFinder.cs" />
     <Compile Include="LogParser.cs" />
     <Compile Include="LogStreamProvider.cs" />
-    <Compile Include="MainService.cs">
+    <Compile Include="MiningFixerService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MainService.Designer.cs">
-      <DependentUpon>MainService.cs</DependentUpon>
+    <Compile Include="MiningFixerService.Designer.cs">
+      <DependentUpon>MiningFixerService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -184,8 +184,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="uninstall.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MiningFixerService.resx">
+      <DependentUpon>MiningFixerService.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>

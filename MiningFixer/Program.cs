@@ -16,7 +16,7 @@ namespace MiningFixer
 
             containerBuilder.RegisterModule<ConfigurationModule<JsonResolver<AppSettings>>>();
 
-            containerBuilder.RegisterType<MainService>().AsSelf().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<MiningFixerService>().AsSelf().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LogFileFinder>().As<ILogFileFinder>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<LogStreamProvider>().As<ILogStreamProvider>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<VoltageFixRunner>().As<IVoltageFixRunner>().InstancePerLifetimeScope();
@@ -31,7 +31,7 @@ namespace MiningFixer
 
             var container = containerBuilder.Build();
 
-            ServiceBase.Run(container.Resolve<MainService>());
+            ServiceBase.Run(container.Resolve<MiningFixerService>());
         }
     }
 }

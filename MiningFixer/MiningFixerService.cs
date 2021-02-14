@@ -5,7 +5,7 @@ using System.Timers;
 
 namespace MiningFixer
 {
-    public partial class MainService : ServiceBase
+    public partial class MiningFixerService : ServiceBase
     {
         private readonly Timer timer;
         private readonly ILogFileFinder logFileFinder;
@@ -15,7 +15,7 @@ namespace MiningFixer
         private string prevLastLogFile = null;
         private ILogParser currentParser;
 
-        public MainService(
+        public MiningFixerService(
             ILogFileFinder logFileFinder,
             ILogStreamProvider logStreamProvider,
             Func<FileStream, ILogParser> logParserProvider)

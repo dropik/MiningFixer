@@ -40,7 +40,6 @@ namespace MiningFixer
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "A service for fixing mining";
             this.serviceInstaller1.DisplayName = "Mining Fixer service";
             this.serviceInstaller1.ServiceName = "MiningFixerService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
